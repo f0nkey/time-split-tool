@@ -53,23 +53,30 @@
     .container {
         position: relative;
         display: grid;
+        align-items: center;
+        justify-items: center;
         grid-template-columns: 1fr 1fr 1fr 1fr 1fr;
         background-color: lightgray;
-        width: 800px;
         justify-content: center;
-        padding-top: 10px;
-        padding-left: 25px;
+        border: 1px solid grey;
+        width: 100%;
+    }
+    span {
+        margin: auto;
     }
     button {
+        margin: auto;
         color: #fff;
         border: none;
         border-radius: 5px;
         width: fit-content;
     }
     input {
+        margin: auto;
         padding-top: 5px;
         padding-left: 5px;
         width: 6em;
+
     }
     #start {
         background-color: forestgreen;

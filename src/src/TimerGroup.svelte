@@ -139,16 +139,16 @@
     {/if}
     <h2>{displayTime}</h2>
     <button on:click={addTimer}>Add Timer</button>
-    {#each subTimersProps as props (props.index)}
-        <SubTimer
-                bind:activated={props.activated}
-                ms={props.ms}
-                bind:kill={props.kill}
-                displayAreYouSure={props.displayAreYouSure}
-                bind:name={props.name}
-                index={props.index}
-        ></SubTimer>
-    {/each}
+        {#each subTimersProps as props (props.index)}
+            <SubTimer
+                    bind:activated={props.activated}
+                    ms={props.ms}
+                    bind:kill={props.kill}
+                    displayAreYouSure={props.displayAreYouSure}
+                    bind:name={props.name}
+                    index={props.index}
+            ></SubTimer>
+        {/each}
 </div>
 
 <style>
