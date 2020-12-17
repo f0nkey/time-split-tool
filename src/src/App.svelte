@@ -1,15 +1,13 @@
 <script>
 	import SubTimer from "./SubTimer.svelte";
-	import TimerGroup from "./TimerGroup.svelte";
+	import TimerCard from "./TimerCard.svelte";
 
 	export let name;
 </script>
 
 <main>
-	<TimerGroup></TimerGroup>
+	<TimerCard></TimerCard>
+	<br>
+	<br>
 	<SubTimer></SubTimer>
-	<SubTimer></SubTimer>
-	<SubTimer></SubTimer>
-	<SubTimer></SubTimer>
-	<SubTimer name="123457" activated=true></SubTimer>
 </main>

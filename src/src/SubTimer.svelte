@@ -40,7 +40,7 @@
 
 <div class="container">
     <input type="text" bind:value={name} placeholder="ID">
-    <span>{displaySeconds} | {ms}</span>
+    <span>{displaySeconds}</span>
     {#if activated}
         <button id="stop" on:click={() => {activated = false}}>STOP</button>
     {:else}

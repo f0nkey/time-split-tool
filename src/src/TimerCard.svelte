@@ -1,4 +1,7 @@
 <script>
+    import {createEventDispatcher} from "svelte"
+    const dispatch = createEventDispatcher();
+
     import SubTimer from "./SubTimer.svelte";
     let displayTime = 0;
     let subTimersProps = [];
@@ -53,7 +56,6 @@
 
     function addTimer() {
         let newSeconds = subtractProportional(subTimersProps)
-        console.log({newSeconds})
         let props = {
             activated:true,
             ms:newSeconds,
@@ -62,22 +64,16 @@
             name: "",
             index: subTimersProps.length,
         }
-        subTimersProps.push(props)
-        console.log("pushed", subTimersProps)
-        subTimersProps = subTimersProps;
+        subTimersProps = [...subTimersProps, props];
     }
 
     // Subtracts a proportional amount from each timer and returns what the new timer should be set to.
     function subtractProportional(timersProps) {
-        // let timerProps = [];
-        // Object.assign(timerProps, timerProps)
-
         let totalTime = 0;
         timersProps.forEach((props) => {
             totalTime += props.ms;
         })
 
-        //let propsSubtractBy = []
         let newTimerSeconds = 0;
 
         timersProps.forEach( timer => {
@@ -104,15 +100,6 @@
         return newTimerSeconds
     }
 
-    $: {
-        // todo: delete timer code here
-        // subTimersProps.forEach((props, i) => {
-        //     if(props.kill === true) {
-        //         subTimersProps.splice(i,1)
-        //     }
-        // })
-    }
-
     function deactivateAll() {
         subTimersProps.forEach( timerProps => {
             timerProps.activated = false
@@ -126,7 +113,6 @@
             timerProps.activated = true
         })
     }
-    // (e) => {props[e.index].seconds = e.currentSeconds}
 
     function handleDivDelete(e) {
         let divAmount = e.detail.ms / (subTimersProps.length-1);
@@ -139,6 +125,10 @@
         e.detail.killFunc();
         subTimersProps = subTimersProps;
     }
+
+    function fireDeleteEvent() {
+        dispatch("deleteMe")
+    }
 </script>
 
 <div>
@@ -149,6 +139,8 @@
     {:else}
         <button on:click={deactivateAll}>Pause All</button>
     {/if}
+    <button on:click={fireDeleteEvent}>Delete Group</button>
+
     <h2>{displayTime}</h2>
     <button on:click={addTimer}>Add Timer</button>
         {#each subTimersProps as props}
