@@ -31,13 +31,16 @@
         return pad(hrs) + ':' + pad(mins) + ':' + pad(secs) + '.' + pad(Math.round(ms), 3);
     }
 
-    let tickerHandle = 0;
+    function divDelete() {
+        dispatch("divdelete", {ms: ms, index: index, killFunc: () =>{kill = true}})
+    }
 
+    let tickerHandle = 0;
 </script>
 
 <div class="container">
     <input type="text" bind:value={name} placeholder="ID">
-    <span>{displaySeconds}</span>
+    <span>{displaySeconds} | {ms}</span>
     {#if activated}
         <button id="stop" on:click={() => {activated = false}}>STOP</button>
     {:else}
@@ -45,7 +48,7 @@
     {/if}
     <button class="delete" on:click={() => {kill = true}}>DELETE</button>
     <Tooltip text="Divides its time amongst siblings after deletion." dir="left">
-        <button class="delete" on:click={() => {kill = true}}>DIV DELETE</button>
+        <button class="delete" on:click={divDelete}>DELETE & &div;</button>
     </Tooltip>
 </div>
 

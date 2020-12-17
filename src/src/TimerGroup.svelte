@@ -127,6 +127,18 @@
         })
     }
     // (e) => {props[e.index].seconds = e.currentSeconds}
+
+    function handleDivDelete(e) {
+        let divAmount = e.detail.ms / (subTimersProps.length-1);
+        console.log("div del detected", subTimersProps.length-1, {divAmount}, e.detail.ms, e.detail.ms / subTimersProps.length-1)
+
+        subTimersProps.forEach( (timerProps, i) => {
+            if(i === e.detail.index) return;
+            timerProps.ms += divAmount;
+        })
+        e.detail.killFunc();
+        subTimersProps = subTimersProps;
+    }
 </script>
 
 <div>
@@ -139,7 +151,7 @@
     {/if}
     <h2>{displayTime}</h2>
     <button on:click={addTimer}>Add Timer</button>
-        {#each subTimersProps as props (props.index)}
+        {#each subTimersProps as props}
             <SubTimer
                     bind:activated={props.activated}
                     ms={props.ms}
@@ -147,6 +159,7 @@
                     displayAreYouSure={props.displayAreYouSure}
                     bind:name={props.name}
                     index={props.index}
+                    on:divdelete={handleDivDelete}
             ></SubTimer>
         {/each}
 </div>
