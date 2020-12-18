@@ -47,7 +47,7 @@
         <button id="start" on:click={() => {activated = true}}>START</button>
     {/if}
     <button class="delete" on:click={() => {kill = true}}>DELETE</button>
-    <Tooltip text="Divides its time amongst siblings after deletion." dir="left">
+    <Tooltip text="Divide time amongst siblings after deletion." dir="left">
         <button class="delete" on:click={divDelete}>DELETE & &div;</button>
     </Tooltip>
 </div>

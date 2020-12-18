@@ -1,11 +1,10 @@
 <script>
     import {createEventDispatcher} from "svelte"
+    import SubTimer from "./SubTimer.svelte";
     const dispatch = createEventDispatcher();
 
-    import SubTimer from "./SubTimer.svelte";
+    export let subTimersProps = [];
     let displayTime = 0;
-    let subTimersProps = [];
-
     let pause = false;
 
     setInterval(() => {
@@ -127,22 +126,24 @@
     }
 
     function fireDeleteEvent() {
-        dispatch("deleteMe")
+        if(confirm("Are you sure want to delete this group?")) {
+            dispatch("delete")
+        }
     }
 </script>
 
 <div>
     <input type="text" placeholder="Group Name">
 
+    <button id="exit" on:click={fireDeleteEvent}>&times;</button>
+
+    <h2>{displayTime}</h2>
+    <button on:click={addTimer}>Add Timer</button>
     {#if pause}
         <button on:click={activateAll}>Start All</button>
     {:else}
         <button on:click={deactivateAll}>Pause All</button>
     {/if}
-    <button on:click={fireDeleteEvent}>Delete Group</button>
-
-    <h2>{displayTime}</h2>
-    <button on:click={addTimer}>Add Timer</button>
         {#each subTimersProps as props}
             <SubTimer
                     bind:activated={props.activated}
@@ -158,7 +159,13 @@
 
 <style>
     div {
+        position: relative;
         outline: 1px solid black;
         width: fit-content;
+    }
+    #exit {
+        position:absolute;
+        right: 0;
+        top: 0;
     }
 </style>
