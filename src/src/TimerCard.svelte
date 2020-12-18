@@ -1,11 +1,29 @@
 <script>
-    import {createEventDispatcher} from "svelte"
+    import {createEventDispatcher, onMount} from "svelte"
     import SubTimer from "./SubTimer.svelte";
     const dispatch = createEventDispatcher();
 
     export let subTimersProps = [];
+    export let groupName = "" // todo: make group name input focused onMount
     let displayTime = 0;
     let pause = false;
+
+    onMount(() => {
+        subTimersProps.forEach((timerProps)=> {
+            timerProps.firstLoad = true
+        })
+    })
+
+    function randomName() {
+        //let adjectives = ["Cool", "Dirty", "Broken", "Excellent", "Sweet", "Good", "Bad", "Righteous", "Neat"];
+        let items = ["Scanners", "Scanguns", "Keyboards", "Servers", "Tablets", "Laptops", "PCs", "Microphones", "Printers", "Mice"];
+
+        function randBetween(min, max) {
+            return Math.floor(Math.random() * (max - min) ) + min;
+        }
+
+        return items[randBetween(0, items.length-1)];
+    }
 
     setInterval(() => {
         subTimersProps.forEach((timerProps, i)=> {
@@ -27,14 +45,29 @@
             }
         })
 
-        let sum = 0;
+        let totalTime = 0;
         subTimersProps.forEach(timerProps => {
-            sum += timerProps.ms;
+            totalTime += timerProps.ms;
         })
 
-        displayTime = msToTime(sum)
+        // set proportions
+        subTimersProps.forEach(timerProps => {
+            if(subTimersProps.length === 1) {
+                //timerProps.ms = (timerProps.ms / 2)
+                return;
+            }
+            let secondsProportion = timerProps.ms / totalTime
+            if(isNaN(secondsProportion)) secondsProportion = 0;
+            timerProps.proportion = secondsProportion;
+        })
+
+        displayTime = msToTime(totalTime)
         subTimersProps = subTimersProps;
     }, 25)
+
+    function setProportions() {
+
+    }
 
     function msToTime(s) {
         // Pad to 2 or 3 digits, default is 2
@@ -133,7 +166,7 @@
 </script>
 
 <div>
-    <input type="text" placeholder="Group Name">
+    <input type="text" bind:value={groupName} placeholder="Group Name">
 
     <button id="exit" on:click={fireDeleteEvent}>&times;</button>
 
@@ -147,11 +180,12 @@
         {#each subTimersProps as props}
             <SubTimer
                     bind:activated={props.activated}
-                    ms={props.ms}
+                    bind:ms={props.ms}
                     bind:kill={props.kill}
-                    displayAreYouSure={props.displayAreYouSure}
                     bind:name={props.name}
                     index={props.index}
+                    bind:proportion={props.proportion}
+                    bind:firstLoad={props.firstLoad}
                     on:divdelete={handleDivDelete}
             ></SubTimer>
         {/each}

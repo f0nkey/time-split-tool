@@ -1,5 +1,7 @@
 <script>
     import {createEventDispatcher} from 'svelte';
+    import {loadedPage} from "./store"
+    import {lastCookieUpdate} from "./store";
     import Tooltip from "./Tooltip.svelte";
 
     const dispatch = createEventDispatcher();
@@ -9,10 +11,23 @@
     export let activated = false
     export let ms = 0 // can be a float
     export let kill = false;
-    export let displayAreYouSure = false;
     export let name = "";
     export let index = 0;
+    export let proportion = 1; // proportion of ms to full group's time
+    export let firstLoad = null; // set by the parent object
     $: displaySeconds = msToTime(ms)
+
+    let madeupTime = false;
+
+    $: {
+        if(firstLoad && activated) {
+            let diff = Date.now() - $lastCookieUpdate;
+            let amtToAdd = proportion * diff;
+            console.log({diff}, {proportion}, {diff}, {amtToAdd})
+            ms += amtToAdd
+            firstLoad = false;
+        }
+    }
 
     function msToTime(s) {
         // Pad to 2 or 3 digits, default is 2
@@ -39,7 +54,7 @@
 </script>
 
 <div class="container">
-    <input type="text" bind:value={name} placeholder="ID">
+    <input type="text" bind:value={name} placeholder="Control #">
     <span>{displaySeconds}</span>
     {#if activated}
         <button id="stop" on:click={() => {activated = false}}>STOP</button>

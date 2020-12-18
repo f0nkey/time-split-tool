@@ -1,22 +1,26 @@
 <script>
     import TimerCard from "./TimerCard.svelte";
-    let cardProps = [1];
+    export let cardsProps = [];
 
     function deleteCard(index) {
-        cardProps.splice(index,1)
-        cardProps = cardProps
+        cardsProps.splice(index,1)
+        cardsProps = cardsProps
     }
 
+    setInterval(()=>{
+        console.log({cardsProps})
+    }, 1000)
+
     function newCardProps() {
-        return {subTimersProps:{}}
+        return {subTimersProps:[], groupName:""}
     }
 </script>
 
 <div id="root">
-    {#each cardProps as cp, i}
-        <TimerCard bind:subTimersProps={cp.subTimersProps} on:delete={()=>{deleteCard(i)}}></TimerCard>
+    {#each cardsProps as cp, i}
+        <TimerCard bind:groupName={cp.groupName} bind:subTimersProps={cp.subTimersProps} on:delete={()=>{deleteCard(i)}}></TimerCard>
     {/each}
-    <div on:click={()=>{cardProps = [...cardProps, newCardProps()]}} id="new-card-container">
+    <div on:click={()=>{cardsProps = [...cardsProps, newCardProps()]}} id="new-card-container">
         <button id="add-btn">+</button>
         <p>Add Timer Card</p>
     </div>
