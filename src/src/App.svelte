@@ -22,5 +22,16 @@
 </script>
 
 <main>
+	<div>
+		<h1>Robert L's Time Tracking Tool</h1>
+		<p>Developed for tracking time in the Repair Center.</p>
+	</div>
+
 	<CardArea bind:cardsProps={cardsProps}></CardArea>
 </main>
+
+<style>
+	div {
+		text-align: center;
+	}
+</style>

@@ -1,6 +1,8 @@
 <script>
     import {createEventDispatcher, onMount} from "svelte"
     import SubTimer from "./SubTimer.svelte";
+    import Tooltip from "./Tooltip.svelte";
+
     const dispatch = createEventDispatcher();
 
     export let subTimersProps = [];
@@ -9,7 +11,7 @@
     let pause = false;
 
     onMount(() => {
-        subTimersProps.forEach((timerProps)=> {
+        subTimersProps.forEach((timerProps) => {
             timerProps.firstLoad = true
         })
     })
@@ -19,29 +21,29 @@
         let items = ["Scanners", "Scanguns", "Keyboards", "Servers", "Tablets", "Laptops", "PCs", "Microphones", "Printers", "Mice"];
 
         function randBetween(min, max) {
-            return Math.floor(Math.random() * (max - min) ) + min;
+            return Math.floor(Math.random() * (max - min)) + min;
         }
 
-        return items[randBetween(0, items.length-1)];
+        return items[randBetween(0, items.length - 1)];
     }
 
     setInterval(() => {
-        subTimersProps.forEach((timerProps, i)=> {
-            if(timerProps.kill) {
+        subTimersProps.forEach((timerProps, i) => {
+            if (timerProps.kill) {
                 subTimersProps.splice(i, 1)
             }
         })
 
         let activatedAmt = 0;
         subTimersProps.forEach(timerProps => {
-            if(timerProps.activated) {
+            if (timerProps.activated) {
                 activatedAmt++;
             }
         })
 
         subTimersProps.forEach(timerProps => {
-            if(timerProps.activated) {
-                timerProps.ms += 25/activatedAmt;
+            if (timerProps.activated) {
+                timerProps.ms += 25 / activatedAmt;
             }
         })
 
@@ -52,12 +54,12 @@
 
         // set proportions
         subTimersProps.forEach(timerProps => {
-            if(subTimersProps.length === 1) {
+            if (subTimersProps.length === 1) {
                 //timerProps.ms = (timerProps.ms / 2)
                 return;
             }
             let secondsProportion = timerProps.ms / totalTime
-            if(isNaN(secondsProportion)) secondsProportion = 0;
+            if (isNaN(secondsProportion)) secondsProportion = 0;
             timerProps.proportion = secondsProportion;
         })
 
@@ -89,8 +91,8 @@
     function addTimer() {
         let newSeconds = subtractProportional(subTimersProps)
         let props = {
-            activated:true,
-            ms:newSeconds,
+            activated: true,
+            ms: newSeconds,
             kill: false,
             displayAreYouSure: false,
             name: "",
@@ -108,14 +110,14 @@
 
         let newTimerSeconds = 0;
 
-        timersProps.forEach( timer => {
-            if(timersProps.length === 1) {
+        timersProps.forEach(timer => {
+            if (timersProps.length === 1) {
                 timer.ms = (timer.ms / 2)
                 newTimerSeconds = (timer.ms / 2);
                 return;
             }
             let secondsProportion = timer.ms / totalTime
-            if(isNaN(secondsProportion)) secondsProportion = 0;
+            if (isNaN(secondsProportion)) secondsProportion = 0;
 
             let subtractBy = Math.ceil(secondsProportion * timer.ms)
             timer.ms = timer.ms - subtractBy
@@ -125,33 +127,33 @@
         newTimerSeconds = newTimerSeconds / 2
 
         // put half of newTimerSeconds back amongst the incumbent timers
-        timersProps.forEach( timer => {
-            timer.ms = timer.ms + ((timersProps.length+1)/2)
+        timersProps.forEach(timer => {
+            timer.ms = timer.ms + ((timersProps.length + 1) / 2)
         })
 
         return newTimerSeconds
     }
 
     function deactivateAll() {
-        subTimersProps.forEach( timerProps => {
+        subTimersProps.forEach(timerProps => {
             timerProps.activated = false
             pause = true;
         })
     }
 
     function activateAll() {
-        subTimersProps.forEach( timerProps => {
+        subTimersProps.forEach(timerProps => {
             pause = false;
             timerProps.activated = true
         })
     }
 
     function handleDivDelete(e) {
-        let divAmount = e.detail.ms / (subTimersProps.length-1);
-        console.log("div del detected", subTimersProps.length-1, {divAmount}, e.detail.ms, e.detail.ms / subTimersProps.length-1)
+        let divAmount = e.detail.ms / (subTimersProps.length - 1);
+        console.log("div del detected", subTimersProps.length - 1, {divAmount}, e.detail.ms, e.detail.ms / subTimersProps.length - 1)
 
-        subTimersProps.forEach( (timerProps, i) => {
-            if(i === e.detail.index) return;
+        subTimersProps.forEach((timerProps, i) => {
+            if (i === e.detail.index) return;
             timerProps.ms += divAmount;
         })
         e.detail.killFunc();
@@ -159,19 +161,24 @@
     }
 
     function fireDeleteEvent() {
-        if(confirm("Are you sure want to delete this group?")) {
+        if (confirm("Are you sure want to delete this group?")) {
             dispatch("delete")
         }
     }
 </script>
 
 <div>
-    <input type="text" bind:value={groupName} placeholder="Group Name">
+    <label>
+        Group Name:
+        <input type="text" bind:value={groupName} placeholder="Group Name">
+    </label>
 
     <button id="exit" on:click={fireDeleteEvent}>&times;</button>
 
-    <h2>{displayTime}</h2>
-    <button on:click={addTimer}>Add Timer</button>
+    <h2>Total Time: {displayTime}</h2>
+    <h5>Every second is divided amongst all sub-timers.<br>This helps when doing multiple CNs at once.</h5>
+
+    <Tooltip text="New timers take a proportional amount of time from each sub-timer. "><button on:click={addTimer}>Add Sub-timer</button></Tooltip>
     {#if pause}
         <button on:click={activateAll}>Start All</button>
     {:else}
@@ -196,6 +203,14 @@
         position: relative;
         outline: 1px solid black;
         width: fit-content;
+        margin: 10px;
+        padding:10px;
+    }
+    h2 {
+        margin-bottom: 0;
+    }
+    h5 {
+        margin-top: 1em;
     }
     #exit {
         position:absolute;

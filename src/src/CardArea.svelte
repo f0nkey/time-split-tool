@@ -21,7 +21,7 @@
         <TimerCard bind:groupName={cp.groupName} bind:subTimersProps={cp.subTimersProps} on:delete={()=>{deleteCard(i)}}></TimerCard>
     {/each}
     <div on:click={()=>{cardsProps = [...cardsProps, newCardProps()]}} id="new-card-container">
-        <button id="add-btn">+</button>
+        <button id="add-btn"><i class="fas fa-plus fa-1x"></i></button>
         <p>Add Timer Card</p>
     </div>
 </div>

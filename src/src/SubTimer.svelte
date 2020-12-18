@@ -16,9 +16,7 @@
     export let proportion = 1; // proportion of ms to full group's time
     export let firstLoad = null; // set by the parent object
     $: displaySeconds = msToTime(ms)
-
-    let madeupTime = false;
-
+    
     $: {
         if(firstLoad && activated) {
             let diff = Date.now() - $lastCookieUpdate;
