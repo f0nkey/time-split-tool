@@ -2,11 +2,12 @@
 	import CardArea from "./CardArea.svelte";
 	import cookies from "js-cookie"
 	import {lastCookieUpdate, loadedPage} from './store.js';
+	import Modal from "./Modal.svelte";
+	import About from "./About.svelte";
 
+	let showAbout = false
 
-	//cookies.remove('cardsProps')
-
-	let currCookie = function() {
+	let currCookie = function () {
 		let c = cookies.get("cardsProps") ?? "[]";
 		return JSON.parse(c);
 	}()
@@ -15,7 +16,7 @@
 	$lastCookieUpdate = currCookie.lastUpdate;
 
 	setInterval(() => {
-		cookies.set("cardsProps", {cardsProps: cardsProps, lastUpdate: Date.now()}, { expires: 1000 });
+		cookies.set("cardsProps", {cardsProps: cardsProps, lastUpdate: Date.now()}, {expires: 1000});
 	}, 250)
 
 	$loadedPage = true;
@@ -23,7 +24,11 @@
 
 <main>
 	<div>
-		<h1>Robert L's Time Tracking Tool</h1>
+		<h1>Robert L's Split Timer Tool</h1>
+		<Modal bind:show={showAbout} heading="About">
+			<About></About>
+		</Modal>
+		<button style="background-color:#42cc8c;" on:click={()=>{showAbout = true}}>About</button>
 		<p>Developed for tracking time in the Repair Center.</p>
 	</div>
 
@@ -33,5 +38,29 @@
 <style>
 	div {
 		text-align: center;
+	}
+	h1 {
+		margin-bottom: 20px;
+	}
+	button {
+		display: inline-block;
+		padding: 0.46em 1.6em;
+		border: 0.1em solid #000000;
+		margin: 0 0.2em 0.2em 0;
+		border-radius: 0.12em;
+		box-sizing: border-box;
+		text-decoration: none;
+		font-weight: 300;
+		color: #000000;
+		text-shadow: 0 0.04em 0.04em rgba(0,0,0,0.35);
+		background-color: #FFFFFF;
+		text-align: center;
+		transition: all 0.15s;
+	}
+	button:hover{
+		text-shadow: 0 0 2em rgba(255,255,255,1);
+		color: #FFFFFF;
+		border-color: #FFFFFF;
+		font-weight: bold;
 	}
 </style>

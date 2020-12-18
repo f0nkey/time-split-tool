@@ -214,7 +214,10 @@
     }
     #exit {
         position:absolute;
-        right: 0;
-        top: 0;
+        right: 5px;
+        top: 5px;
+        width: 2rem;
+        font-size: 12px;
+        font-weight: bold;
     }
 </style>

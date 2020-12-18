@@ -22,7 +22,7 @@
     {/each}
     <div on:click={()=>{cardsProps = [...cardsProps, newCardProps()]}} id="new-card-container">
         <button id="add-btn"><i class="fas fa-plus fa-1x"></i></button>
-        <p>Add Timer Card</p>
+        <p style="margin: 2px; padding-bottom: 10px;">Add Timer Card</p>
     </div>
 </div>
 
@@ -35,6 +35,7 @@
         background-color: grey;
         text-align: center;
         cursor: pointer;
+        margin: 10px;
     }
     #add-btn {
         font-size:10em;

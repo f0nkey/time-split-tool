@@ -16,7 +16,7 @@
     export let proportion = 1; // proportion of ms to full group's time
     export let firstLoad = null; // set by the parent object
     $: displaySeconds = msToTime(ms)
-    
+
     $: {
         if(firstLoad && activated) {
             let diff = Date.now() - $lastCookieUpdate;
@@ -78,21 +78,22 @@
         width: 100%;
     }
     span {
-        margin: auto;
+        margin: 10px;
     }
     button {
-        margin: auto;
+        margin: 2px auto;
         color: #fff;
         border: none;
         border-radius: 5px;
         width: fit-content;
+        font-size: 0.8em;
+        padding: 0.5em;
     }
     input {
         margin: auto;
         padding-top: 5px;
         padding-left: 5px;
         width: 6em;
-
     }
     #start {
         background-color: forestgreen;
