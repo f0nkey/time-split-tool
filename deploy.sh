@@ -1,6 +1,8 @@
-rm -rf ./build
-rm favicon.png
-rm global.css
-rm index.html
+cd src || exit
+npm run build
+cd ..
+
+rm -rf ./docs
+mkdir ./docs
 
 cp -r ./src/public/. ./docs
