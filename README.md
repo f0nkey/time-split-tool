@@ -1,4 +1,8 @@
-time-split-tool
+# time-split-tool
+
+<p align="center">
+  <img width=400 src="https://i.imgur.com/U65fyId.png">
+</p>  
 
 Access the timer here: https://f0nkey.github.io/time-split-tool/
 
