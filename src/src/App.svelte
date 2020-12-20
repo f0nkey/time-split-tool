@@ -24,12 +24,11 @@
 
 <main>
 	<div>
-		<h1>Robert L's Split Timer Tool</h1>
+		<h1>F0nkey's Split Timer Tool</h1>
 		<Modal bind:show={showAbout} heading="About">
 			<About></About>
 		</Modal>
 		<button style="background-color:#42cc8c;" on:click={()=>{showAbout = true}}>About</button>
-		<p>Developed for tracking time in the Repair Center.</p>
 	</div>
 
 	<CardArea bind:cardsProps={cardsProps}></CardArea>
